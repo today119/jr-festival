@@ -68,6 +68,23 @@ a.btn{display:block;text-align:center;margin-top:10px;border-radius:12px;padding
 nav button{font-size:13px;padding:9px 0;min-width:0}nav .wrap{gap:4px}
 .row>span{flex:1;min-width:0;overflow-wrap:anywhere}
 .foot{text-align:center;font-size:12px;color:var(--sub);margin-top:24px}
+.eb{margin-left:auto;border:1.5px solid var(--line);background:var(--bg);color:var(--sub);font:inherit;font-size:13px;font-weight:700;border-radius:99px;padding:4px 12px;cursor:pointer}
+.pinbox{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.pinbox input{width:120px;height:38px;border:1.5px solid var(--line);border-radius:10px;padding:0 10px;font:inherit;background:var(--bg);color:var(--ink)}
+.pinbox button{height:38px;border:0;border-radius:10px;padding:0 16px;font:inherit;font-weight:700;background:var(--blue);color:#fff;cursor:pointer}
+.lu{border-top:1px solid var(--line);padding:11px 0}.lu:first-of-type{border-top:0}
+.lu .top{display:flex;align-items:center;gap:8px}
+.lu .nm{font-weight:900;font-size:15px}
+.cnt{margin-left:auto;font-size:13px;font-weight:900;border-radius:99px;padding:2px 10px;background:var(--line);color:var(--sub)}
+.cnt.ok{background:var(--win);color:var(--wint)}.cnt.over{background:#fff1f1;color:#b42318}
+.nums{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.nums i{font-style:normal;background:var(--sky);color:var(--navy);font-weight:900;border-radius:8px;padding:1px 9px;font-size:14px}
+.nums i.sub{background:var(--soft);color:#c2410c}
+.nums .e{color:var(--sub);font-size:13px}
+.lu label{display:block;font-size:12px;color:var(--sub);margin-top:7px}
+.lu input{width:100%;height:38px;border:1.5px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:15px;background:var(--bg);color:var(--ink);margin-top:3px}
+.save{display:block;width:100%;margin-top:10px;border:0;border-radius:12px;padding:12px;font:inherit;font-weight:700;background:var(--blue);color:#fff;cursor:pointer}
+[hidden]{display:none!important}
 </style></head><body>
 <header><div class="wrap"><span class="tag">교육부 주최 · 인천 개최</span>
 <h1>제19회 전국학교스포츠클럽 축전<br>줄넘기대회</h1><p>2026. 11. 14.(토) - 11. 15.(일) · 인천해양과학고 체육관</p></div></header>
@@ -142,6 +159,13 @@ nav button{font-size:13px;padding:9px 0;min-width:0}nav .wrap{gap:4px}
 </section>
 
 <section class="tab" id="rule">
+ <div class="card"><h2 style="display:flex;align-items:center">📝 종목별 출전 명단<button id="editBtn" class="eb">✏️ 수정</button></h2>
+  <div class="t">인천영종고 남고부 · 선수 번호(1-20번)로 적어요 · 후보는 종목마다 2명까지</div>
+  <div id="pinBox" class="pinbox" hidden style="margin-top:8px"><input id="pin" type="password" inputmode="numeric" maxlength="8" placeholder="비밀번호"><button id="pinOk">확인</button><span id="pinMsg" class="t"></span></div>
+  <div id="lineup" style="margin-top:6px"></div>
+  <div class="t" id="luSum" style="margin-top:6px"></div>
+ </div>
+
  <div class="card"><h2>🪢 경기 방식</h2>
   <div class="row"><b>팀</b><span>학교별 선수 <span class="hl">20명 이내</span> (후보 포함)<br><span class="t">20명으로 공식 4종목 모두 출전 · 종목 간 중복 출전 가능</span></span></div>
   <div class="row"><b>순위</b><span>종목마다 1회 · 4종목 순위 점수 합계로 최종 순위</span></div>
@@ -161,6 +185,7 @@ nav button{font-size:13px;padding:9px 0;min-width:0}nav .wrap{gap:4px}
   <div class="t">긴줄 종목은 모두 손잡이 포함 길이의 구슬줄을 써요.</div>
  </div>
  <div class="warn">🚫 <b>꼭 지켜요</b><br>· 시작 신호 전에 줄을 돌리면 부정출발 → <b>5회 감점</b><br>· 손잡이를 잡지 않거나 줄을 손에 감으면 <b>실격</b><br>· <b>신발 필수</b> · 벗겨지면 팀이 한 바퀴 도는 동안 다시 신기<br>· 줄이 끊어지거나 손잡이에서 빠지면 재경기 (손잡이를 놓친 건 재경기 없음)<br>· 후보 없이 뛰다 부상으로 인원이 모자라면 실격 (그 전 기록은 인정)</div>
+
  <div class="card"><h2>🧮 우리 팀 점수 계산기</h2>
   <div class="t">종목별 예상 순위를 고르면 합계가 나와요. 1위 100점부터 10점씩 내려가고 11위부터 0점이에요.</div>
   <div id="calc" style="margin-top:6px"></div>
@@ -245,5 +270,37 @@ function renderCalc(){var h='',s=0;EV.forEach(function(e,i){var o='<option value
  document.getElementById('calc').innerHTML=h;document.getElementById('sum').textContent=s+'점 / 400'}
 document.getElementById('calc').addEventListener('change',function(e){var i=e.target.dataset.i;if(i==null)return;R[i]=+e.target.value;LS.set('jrf_rank',R);renderCalc()});
 renderCalc();
+
+// ---- 종목별 출전 명단 (공유 저장: 번호만) ----
+var DB='https://matchmaker-28187-default-rtdb.asia-southeast1.firebasedatabase.app/jr_festival/lineup';
+var LE=[['10인 스피드 릴레이',10],['긴줄 8자 마라톤',12],['긴줄 뛰어들어 함께뛰기',14],['긴줄 4도약',16],['이벤트: 긴줄 손가위바위보',10]];
+var L=LS.get('jrf_lineup',{}),EDIT=false;
+function nums(t){var seen={};return (t||'').split(/[ ,]+/).filter(function(x){if(!x||seen[x])return false;seen[x]=1;return true})}
+function renderLineup(){var h='',all={};
+ LE.forEach(function(e,i){var r=L[i]||{},a=nums(r.n),b=nums(r.s);a.concat(b).forEach(function(x){all[x]=1});
+  var c=a.length===e[1]?'ok':(a.length>e[1]?'over':'');
+  h+='<div class="lu"><div class="top"><span class="nm">'+e[0]+'</span><span class="cnt '+c+'">'+a.length+' / '+e[1]+'명</span></div>';
+  if(EDIT)h+='<label>선수 번호 ('+e[1]+'명)</label><input data-n="'+i+'" inputmode="numeric" maxlength="80" placeholder="예: 1, 2, 3" value="'+(r.n||'')+'"><label>후보 번호 (2명까지)</label><input data-s="'+i+'" inputmode="numeric" maxlength="12" placeholder="예: 17, 18" value="'+(r.s||'')+'">';
+  else h+='<div class="nums">'+(a.length||b.length?a.map(function(x){return '<i>'+x+'</i>'}).join('')+b.map(function(x){return '<i class="sub">후보 '+x+'</i>'}).join(''):'<span class="e">아직 안 정했어요</span>')+'</div>';
+  h+='</div>'});
+ if(EDIT)h+='<button class="save" id="saveLu">저장하기</button>';
+ document.getElementById('lineup').innerHTML=h;
+ var n=Object.keys(all).length;document.getElementById('luSum').textContent='전체 출전 선수 '+n+'명'+(n>20?' ⚠️ 20명을 넘었어요':' / 20명 이내');
+ if(EDIT)document.getElementById('saveLu').onclick=saveLu}
+function saveLu(){var b=document.getElementById('saveLu');b.textContent='저장 중...';var jobs=[];
+ LE.forEach(function(e,i){var nv=document.querySelector('[data-n="'+i+'"]').value.replace(/[^0-9 ,]/g,'').slice(0,80),sv=document.querySelector('[data-s="'+i+'"]').value.replace(/[^0-9 ,]/g,'').slice(0,12);
+  L[i]={n:nv,s:sv,at:Date.now()};jobs.push(fetch(DB+'/'+i+'.json',{method:'PUT',body:JSON.stringify(L[i])}).then(function(r){if(!r.ok)throw 0}))});
+ Promise.all(jobs).then(function(){LS.set('jrf_lineup',L);window._dirty=0;b.textContent='✅ 저장됐어요';setTimeout(function(){setEdit(false)},700)}).catch(function(){b.textContent='⚠️ 저장 실패 · 다시 누르기'})}
+function loadLu(d){if(d&&typeof d==='object'){L={};Object.keys(d).forEach(function(k){if(d[k])L[k]=d[k]});LS.set('jrf_lineup',L);if(!EDIT)renderLineup()}}
+function pull(){fetch(DB+'.json').then(function(r){return r.json()}).then(function(d){loadLu(d||{})}).catch(function(){})}
+renderLineup();pull();
+if(window.EventSource&&!/nosse/.test(location.search)){try{var es=new EventSource(DB+'.json');es.addEventListener('put',pull);es.addEventListener('patch',pull)}catch(e){}}
+var PINH='83adce04858168eca9eeb648d1515b2fba07d091133fa3cd3b3576b453e052c0';
+function sha(t){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
+function setEdit(on){EDIT=on;LS.set('jrf_unlock',on);document.getElementById('pinBox').hidden=true;document.getElementById('editBtn').textContent=on?'✓ 수정 끝':'✏️ 수정';renderLineup()}
+document.getElementById('editBtn').onclick=function(){if(EDIT){setEdit(false);return}if(LS.get('jrf_unlock',false)){setEdit(true);return}var b=document.getElementById('pinBox');b.hidden=!b.hidden;if(!b.hidden)document.getElementById('pin').focus()};
+function tryPin(){sha('jrf:'+document.getElementById('pin').value).then(function(x){if(x===PINH){document.getElementById('pin').value='';setEdit(true)}else document.getElementById('pinMsg').textContent='비밀번호가 달라요'})}
+document.getElementById('pinOk').onclick=tryPin;
+document.getElementById('pin').addEventListener('keydown',function(e){if(e.key==='Enter')tryPin()});
 </script>
 </body></html>
