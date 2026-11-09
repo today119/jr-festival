@@ -296,12 +296,12 @@ function renderLineup(){var h='',all={};
  document.getElementById('keyBox').hidden=!(LOCKED&&!EDIT);
  if(LOCKED&&!EDIT){document.getElementById('lineup').innerHTML='<div class="nums"><span class="e">🔒 명단이 잠겨 있어요. 선생님께 받은 팀 암호를 넣어 주세요.</span></div>';document.getElementById('luSum').textContent='';return}
  if(EDIT){if(!W)toW();
-  h+='<div class="lu"><div class="top"><span class="nm">👥 선수 명단</span><span class="cnt '+(W.r.length>20?'over':(W.r.length?'ok':''))+'">'+W.r.length+' / 20명</span></div><label>시트의 이름 열을 붙여넣어요 (줄바꿈이나 쉼표로 구분)</label><textarea id="rosterIn" rows="4" placeholder="김민준&#10;이서준&#10;박지호">'+esc(W.r.join('\n'))+'</textarea></div>';
   LE.forEach(function(e,i){var p=W.ev[i],c=p.n.length===e[1]?'ok':(p.n.length>e[1]?'over':'');
    h+='<div class="lu"><div class="top"><span class="nm">'+e[0]+'</span><span class="cnt '+c+'">'+p.n.length+' / '+e[1]+'명</span></div><div class="t" style="margin-top:4px">후보 '+p.s.length+' / 2</div><div class="pick">';
    W.r.forEach(function(x){var st=p.n.indexOf(x)>=0?'on':(p.s.indexOf(x)>=0?'sub':'');h+='<button data-pe="'+i+'" data-pn="'+esc(x)+'" class="'+st+'">'+(st==='sub'?'후보 ':'')+esc(x)+'</button>'});
    if(!W.r.length)h+='<span class="e">먼저 위에 선수 명단을 넣어 주세요</span>';
    h+='</div></div>'});
+  h+='<details class="lu"'+(W.r.length?'':' open')+'><summary class="nm" style="cursor:pointer">👥 선수 명단 고치기 ('+W.r.length+'명)</summary><label>시트의 이름 열을 붙여넣어요 (줄바꿈이나 쉼표로 구분)</label><textarea id="rosterIn" rows="6" placeholder="김민준&#10;이서준">'+esc(W.r.join('\n'))+'</textarea></details>';
   h+='<label style="display:block;font-size:12px;color:var(--sub);margin-top:12px">팀 암호 (6자 이상 · 학생들에게 단톡으로 알려 주세요)</label><input id="newKey" type="text" maxlength="40" value="'+esc(KEY)+'" style="width:100%;height:38px;border:1.5px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;background:var(--bg);color:var(--ink);margin-top:3px"><button class="save" id="saveLu">저장하기</button>';
   document.getElementById('lineup').innerHTML=h;
   var used={};LE.forEach(function(e,i){W.ev[i].n.concat(W.ev[i].s).forEach(function(x){used[x]=1})});
@@ -329,14 +329,15 @@ function apply(rec){ENC=rec;if(!rec){L={};LOCKED=false;if(!EDIT)renderLineup();r
  decrypt(rec,KEY).then(function(o){L=o;LOCKED=false;if(!EDIT)renderLineup()}).catch(function(){LOCKED=true;if(!EDIT)renderLineup()})}
 function pull(){fetch(DB+'.json').then(function(r){return r.json()}).then(apply).catch(function(){})}
 function tryKey(){var k=document.getElementById('tkey').value.trim();if(!ENC)return;document.getElementById('keyMsg').textContent='여는 중...';
- decrypt(ENC,k).then(function(o){KEY=k;LS.set('jrf_key',k);L=o;LOCKED=false;document.getElementById('tkey').value='';document.getElementById('keyMsg').textContent='';renderLineup()}).catch(function(){document.getElementById('keyMsg').textContent='암호가 달라요'})}
+ decrypt(ENC,k).then(function(o){KEY=k;LS.set('jrf_key',k);L=o;LOCKED=false;document.getElementById('tkey').value='';document.getElementById('keyMsg').textContent='';if(WANT){WANT=false;setEdit(true)}else renderLineup()}).catch(function(){document.getElementById('keyMsg').textContent='암호가 달라요'})}
 document.getElementById('keyOk').onclick=tryKey;
 document.getElementById('tkey').addEventListener('keydown',function(e){if(e.key==='Enter')tryKey()});
 renderLineup();pull();
 if(window.EventSource&&!/nosse/.test(location.search)){try{var es=new EventSource(DB+'.json');es.addEventListener('put',pull);es.addEventListener('patch',pull)}catch(e){}}
 var PINH='83adce04858168eca9eeb648d1515b2fba07d091133fa3cd3b3576b453e052c0';
 function sha(t){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')})}
-function setEdit(on){if(on&&LOCKED){L={};LOCKED=false}EDIT=on;W=null;LS.set('jrf_unlock',on);document.getElementById('pinBox').hidden=true;document.getElementById('editBtn').textContent=on?'✓ 수정 끝':'✏️ 수정';renderLineup()}
+var WANT=false;
+function setEdit(on){if(on&&LOCKED){WANT=true;document.getElementById('pinBox').hidden=true;document.getElementById('keyMsg').textContent='팀 암호를 넣으면 수정 화면이 열려요';document.getElementById('tkey').focus();return}EDIT=on;W=null;LS.set('jrf_unlock',on);document.getElementById('pinBox').hidden=true;document.getElementById('editBtn').textContent=on?'✓ 수정 끝':'✏️ 수정';renderLineup()}
 document.getElementById('editBtn').onclick=function(){if(EDIT){setEdit(false);return}if(LS.get('jrf_unlock',false)){setEdit(true);return}var b=document.getElementById('pinBox');b.hidden=!b.hidden;if(!b.hidden)document.getElementById('pin').focus()};
 function tryPin(){sha('jrf:'+document.getElementById('pin').value).then(function(x){if(x===PINH){document.getElementById('pin').value='';setEdit(true)}else document.getElementById('pinMsg').textContent='비밀번호가 달라요'})}
 document.getElementById('pinOk').onclick=tryPin;
