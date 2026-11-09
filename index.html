@@ -85,15 +85,31 @@ nav button{font-size:13px;padding:9px 0;min-width:0}nav .wrap{gap:4px}
 .lu input{width:100%;height:38px;border:1.5px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:15px;background:var(--bg);color:var(--ink);margin-top:3px}
 .save{display:block;width:100%;margin-top:10px;border:0;border-radius:12px;padding:12px;font:inherit;font-weight:700;background:var(--blue);color:#fff;cursor:pointer}
 [hidden]{display:none!important}
+.ck{display:flex;gap:10px;align-items:center;padding:11px 4px;border-top:1px solid var(--line);font-size:15px;cursor:pointer;user-select:none}
+.ck:first-of-type{border-top:0}
+.ck .bx{flex:0 0 24px;height:24px;border:2px solid var(--line);border-radius:7px;display:grid;place-items:center;font-size:15px;color:#fff}
+.ck.on .bx{background:var(--wint);border-color:var(--wint)}
+.ck.on span:last-child{color:var(--sub);text-decoration:line-through}
+.ck .must{color:var(--orange);font-weight:900;margin-right:2px}
+.prog{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
+.prog i{display:block;height:100%;background:var(--wint);transition:width .3s}
 </style></head><body>
 <header><div class="wrap"><span class="tag">교육부 주최 · 인천 개최</span>
 <h1>제19회 전국학교스포츠클럽 축전<br>줄넘기대회</h1><p>2026. 11. 14.(토) - 11. 15.(일) · 인천해양과학고 체육관</p></div></header>
 <nav><div class="wrap">
-<button data-t="info" class="on">안내</button><button data-t="sched">일정</button><button data-t="rule">종목</button><button data-t="teams">참가팀</button><button data-t="safe">안전</button>
+<button data-t="info" class="on">안내</button><button data-t="sched">일정</button><button data-t="rule">종목</button><button data-t="teams">참가팀</button><button data-t="pack">준비물</button>
 </div></nav>
 <main class="wrap">
 
 <section class="tab on" id="info">
+ <div class="card goal" style="border:2px solid var(--orange)"><h2>📣 인천영종고 집합 안내</h2>
+  <div class="row"><b>언제</b><span><span class="hl">11. 14.(토) 13:00까지</span></span></div>
+  <div class="row"><b>어디</b><span>인천해양과학고등학교<br><span class="t">인천 연수구 능허대로 71</span></span></div>
+  <div class="row"><b>어떻게</b><span><b>각자 대중교통</b>으로 와요<br><span class="t">정류장 «인천해양과학고» · 간선 111-2 · 65-1 · 8 · 9 / 지선 521 · 523</span></span></div>
+  <div class="row"><b>그다음</b><span>14:00 등록 · 14:30 리허설 · 15:30 고등부 경기</span></div>
+  <a class="btn" href="https://map.kakao.com/?q=%EC%9D%B8%EC%B2%9C%ED%95%B4%EC%96%91%EA%B3%BC%ED%95%99%EA%B3%A0%EB%93%B1%ED%95%99%EA%B5%90" target="_blank" rel="noopener">집에서 가는 길 찾기 (카카오맵)</a>
+  <div class="t" style="margin-top:8px">늦을 것 같으면 바로 선생님께 연락해요. 이동할 때 휴대폰·이어폰 보지 않기!</div>
+ </div>
  <div class="card"><h2>📌 한눈에 보기</h2>
   <div class="row"><b>기간</b><span>11. 14.(토) - 11. 15.(일) 2일간</span></div>
   <div class="row"><b>장소</b><span>인천해양과학고등학교 체육관<br><span class="t">인천 연수구 능허대로 71</span></span></div>
@@ -202,43 +218,18 @@ nav button{font-size:13px;padding:9px 0;min-width:0}nav .wrap{gap:4px}
  </div>
 </section>
 
-<section class="tab" id="safe">
- <div class="card"><h2>🚑 응급 상황이면</h2>
-  <div class="step"><b>1</b><span>가까운 선생님·대회 본부에 바로 알려요</span></div>
-  <div class="step"><b>2</b><span>위급하면 <b>119</b> · 교통사고는 <b>112</b>도 함께</span></div>
-  <div class="step"><b>3</b><span>대회 총괄: 인천시교육청 체육건강교육과 <a href="tel:0324208439" style="color:var(--blue);font-weight:700">032-420-8439</a></span></div>
-  <div class="t" style="margin-top:6px">경기장에 구급차와 응급구조요원이 대기해요.</div>
+<section class="tab" id="pack">
+ <div class="card"><h2>🎒 준비물 체크</h2>
+  <div class="t" id="pct">0 / 0 완료</div><div class="prog"><i id="bar" style="width:0"></i></div>
+  <h3>꼭 챙겨요</h3><div id="ck1"></div>
+  <h3>경기용</h3><div id="ck2"></div>
+  <h3>그 밖에</h3><div id="ck3"></div>
+  <div class="t" style="margin-top:8px">체크는 내 폰에만 저장돼요.</div>
  </div>
- <div class="card"><h2>🏥 가까운 응급실</h2>
-  <div class="hos"><b>인천적십자병원</b> · 연수구 원인재로 263<br>응급실 <a href="tel:050713094119">0507-1309-4119</a></div>
-  <div class="hos"><b>나사렛국제병원</b> · 연수구 먼우금로 98<br>응급실 <a href="tel:0328999580">032-899-9580</a></div>
-  <div class="hos"><b>인하대병원</b> · 중구 인항로 27<br>응급실 <a href="tel:0328902301">032-890-2301</a></div>
-  <div class="hos"><b>현대유비스병원</b> · 미추홀구 독배로 503<br>응급실 <a href="tel:0328905582">032-890-5582</a></div>
-  <div class="hos"><b>가천대길병원</b> · 남동구 남동대로 783<br>응급실 <a href="tel:0324603011">032-460-3011</a></div>
- </div>
- <div class="card"><h2>🩹 다쳤을 때 응급처치</h2>
-  <h3>발목 삐었을 때 (RICE)</h3>
-  <div class="step"><b>1</b><span><b>안정</b> 다친 곳을 편한 자세로 쉬게 해요</span></div>
-  <div class="step"><b>2</b><span><b>냉찜질</b> 얼음을 천에 싸서 대요</span></div>
-  <div class="step"><b>3</b><span><b>압박</b> 붕대로 감싸요</span></div>
-  <div class="step"><b>4</b><span><b>거상</b> 쿠션으로 심장보다 높게 올려요</span></div>
-  <h3>까지거나 베였을 때</h3>
-  <div class="t" style="font-size:14px">손 씻기 → 상처 씻기 → 거즈로 눌러 지혈 → 소독 → 드레싱. 깊거나 벌어지면 병원으로.</div>
-  <h3>머리를 부딪혔을 때</h3>
-  <div class="t" style="font-size:14px">머리를 약간 높여 눕히고 얼음찜질. <b style="color:#c2410c">잠깐이라도 의식을 잃었거나, 토하거나 심한 두통, 귀·코에서 피나 맑은 액체</b>가 나오면 즉시 병원.</div>
-  <h3>경련할 때</h3>
-  <div class="t" style="font-size:14px">몸을 옆으로 돌리고 주변 물건 치우기. 입에 아무것도 넣지 않기. 끝나도 반드시 병원.</div>
- </div>
- <div class="card"><h2>❤️ 심폐소생술 · AED</h2>
-  <div class="step"><b>1</b><span>어깨를 두드리며 의식 확인</span></div>
-  <div class="step"><b>2</b><span>한 사람을 정확히 지목해 «119 신고해 주세요», «AED 가져와 주세요»</span></div>
-  <div class="step"><b>3</b><span>가슴 한가운데를 5-6cm 깊이로, 분당 100-120회 <b>30번 압박</b> · 구급대가 올 때까지 반복</span></div>
-  <div class="step"><b>4</b><span>AED가 오면 전원 켜고 음성 안내대로 패드 부착 → 분석 중엔 떨어지기 → 버튼 → 바로 가슴압박</span></div>
- </div>
- <div class="card"><h2>🚶 이동할 때</h2>
-  <div class="row"><b>도보</b><span>휴대폰·이어폰 보지 않기 · 무단횡단 금지 · 선생님 안내 따라 무리 지어 이동</span></div>
-  <div class="row"><b>버스</b><span>전 좌석 안전띠 · 운행 중 자리 이동 금지</span></div>
-  <div class="row"><b>음식</b><span>개인적으로 사 먹지 않기 (식중독 예방) · 푸드존·지정 식당 이용</span></div>
+ <div class="card"><h2>🚑 다치거나 아프면</h2>
+  <div class="row"><b>먼저</b><span>가까운 선생님·대회 본부에 바로 알려요 (경기장에 구급차·응급구조요원 대기)</span></div>
+  <div class="row"><b>위급</b><span><a href="tel:119" style="color:var(--blue);font-weight:700">119</a> · 대회 총괄 <a href="tel:0324208439" style="color:var(--blue);font-weight:700">032-420-8439</a></span></div>
+  <div class="row"><b>응급실</b><span>인천적십자병원 · 나사렛국제병원 (연수구, 가장 가까움)</span></div>
  </div>
 </section>
 
@@ -249,7 +240,7 @@ var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(
 var tabs=document.querySelectorAll('nav button');
 function show(t){tabs.forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});document.querySelectorAll('.tab').forEach(function(s){s.classList.toggle('on',s.id===t)});LS.set('jrf_tab',t)}
 tabs.forEach(function(b){b.onclick=function(){show(b.dataset.t);scrollTo(0,0)}});
-show(LS.get('jrf_tab','info'));
+var _t=LS.get('jrf_tab','info');show(_t==='safe'?'info':_t);
 
 // 참가팀
 var SIDO=['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주'];
@@ -318,5 +309,16 @@ document.getElementById('editBtn').onclick=function(){if(EDIT){setEdit(false);re
 function tryPin(){sha('jrf:'+document.getElementById('pin').value).then(function(x){if(x===PINH){document.getElementById('pin').value='';setEdit(true)}else document.getElementById('pinMsg').textContent='비밀번호가 달라요'})}
 document.getElementById('pinOk').onclick=tryPin;
 document.getElementById('pin').addEventListener('keydown',function(e){if(e.key==='Enter')tryPin()});
+
+// ---- 준비물 ----
+var P=[['ck1',['교통카드 (충전 확인)','학생증','휴대폰 · 충전 확인'],1],
+['ck2',['운동화 (신발 필수 · 끈 단단히)','운동복 · 단체 티','개인 줄넘기','물병','땀 닦을 수건']],
+['ck3',['따뜻한 겉옷','간식','개인 상비약 · 복용약','마스크']]];
+var C=LS.get('jrf_pack',{});
+function renderPack(){var tot=0,on=0;P.forEach(function(g){var h='';g[1].forEach(function(t,i){var k=g[0]+i,c=!!C[k];tot++;if(c)on++;
+ h+='<div class="ck'+(c?' on':'')+'" data-c="'+k+'"><span class="bx">'+(c?'✓':'')+'</span><span>'+(g[2]?'<span class="must">★</span>':'')+t+'</span></div>'});document.getElementById(g[0]).innerHTML=h});
+ document.getElementById('pct').textContent=on+' / '+tot+' 완료'+(on===tot?' 🎉 준비 끝!':'');document.getElementById('bar').style.width=(on/tot*100)+'%'}
+document.getElementById('pack').addEventListener('click',function(e){var d=e.target.closest('[data-c]');if(!d)return;C[d.dataset.c]=!C[d.dataset.c];LS.set('jrf_pack',C);renderPack()});
+renderPack();
 </script>
 </body></html>
