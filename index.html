@@ -302,7 +302,7 @@ function renderLineup(){var h='',all={};
    if(!W.r.length)h+='<span class="e">먼저 위에 선수 명단을 넣어 주세요</span>';
    h+='</div></div>'});
   h+='<details class="lu"'+(W.r.length?'':' open')+'><summary class="nm" style="cursor:pointer">👥 선수 명단 고치기 ('+W.r.length+'명)</summary><label>시트의 이름 열을 붙여넣어요 (줄바꿈이나 쉼표로 구분)</label><textarea id="rosterIn" rows="6" placeholder="김민준&#10;이서준">'+esc(W.r.join('\n'))+'</textarea></details>';
-  h+='<label style="display:block;font-size:12px;color:var(--sub);margin-top:12px">팀 암호 (6자 이상 · 학생들에게 단톡으로 알려 주세요)</label><input id="newKey" type="text" maxlength="40" value="'+esc(KEY)+'" style="width:100%;height:38px;border:1.5px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;background:var(--bg);color:var(--ink);margin-top:3px"><button class="save" id="saveLu">저장하기</button>';
+  h+='<label style="display:block;font-size:12px;color:var(--sub);margin-top:12px">팀 암호 (4자 이상 · 학생들에게 단톡으로 알려 주세요)</label><input id="newKey" type="text" maxlength="40" value="'+esc(KEY)+'" style="width:100%;height:38px;border:1.5px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;background:var(--bg);color:var(--ink);margin-top:3px"><button class="save" id="saveLu">저장하기</button>';
   document.getElementById('lineup').innerHTML=h;
   var used={};LE.forEach(function(e,i){W.ev[i].n.concat(W.ev[i].s).forEach(function(x){used[x]=1})});
   document.getElementById('luSum').textContent='종목에 뽑힌 선수 '+Object.keys(used).length+'명';
@@ -319,7 +319,7 @@ document.getElementById('lineup').addEventListener('click',function(e){var t=e.t
 document.getElementById('lineup').addEventListener('change',function(e){if(e.target.id!=='rosterIn'||!W)return;var k=document.getElementById('newKey').value;W.r=names(e.target.value).slice(0,30);
  LE.forEach(function(x,i){var p=W.ev[i];p.n=p.n.filter(function(v){return W.r.indexOf(v)>=0});p.s=p.s.filter(function(v){return W.r.indexOf(v)>=0})});renderLineup();document.getElementById('newKey').value=k});
 function saveLu(){var b=document.getElementById('saveLu'),k=document.getElementById('newKey').value.trim();
- if(k.length<6){b.textContent='⚠️ 팀 암호를 6자 이상 정해 주세요';return}
+ if(k.length<4){b.textContent='⚠️ 팀 암호를 4자 이상 정해 주세요';return}
  var ta=document.getElementById('rosterIn');if(ta&&names(ta.value).join('\n')!==W.r.join('\n')){ta.dispatchEvent(new Event('change',{bubbles:true}));b=document.getElementById('saveLu')}
  var obj={r:W.r.slice()};LE.forEach(function(e,i){obj[i]={n:W.ev[i].n.join(', '),s:W.ev[i].s.join(', ')}});
  b.textContent='저장 중...';
