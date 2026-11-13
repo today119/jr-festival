@@ -99,11 +99,30 @@ nav button{font-size:13px;padding:9px 0;min-width:0}nav .wrap{gap:4px}
 .pick button.sub{background:var(--soft);border-color:var(--orange);color:#c2410c}
 .pick .e{color:var(--sub);font-size:13px}
 .lu textarea{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-size:15px;background:var(--bg);color:var(--ink);margin-top:3px;resize:vertical}
+.mi{border-top:1px solid var(--line);padding:12px 0}.mi:first-of-type{border-top:0}
+.mi .top{display:flex;gap:10px;align-items:center;cursor:pointer;user-select:none}
+.mi .bx{flex:0 0 26px;height:26px;border:2px solid var(--line);border-radius:8px;display:grid;place-items:center;color:#fff;font-size:15px}
+.mi.on .bx{background:var(--wint);border-color:var(--wint)}
+.mi .nm{font-weight:900;font-size:15px}.mi.on .nm{color:var(--sub);text-decoration:line-through}
+.mi .amt{margin-left:auto;text-align:right;font-weight:900;color:var(--blue);white-space:nowrap}
+.mi .amt small{display:block;font-size:11px;color:var(--sub);font-weight:500}
+.mi .f{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:6px;margin-top:8px}
+.mi input{width:100%;height:36px;border:1.5px solid var(--line);border-radius:8px;padding:0 9px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink)}
+.mi .rc{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--sub);margin-top:6px}
+.mi .rc input{width:18px;height:18px}
+.mi .x{margin-left:auto;border:0;background:none;color:var(--sub);font:inherit;font-size:12px;cursor:pointer;text-decoration:underline}
+.mi.over .amt{color:#b42318}
+.msum{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:6px;text-align:center}
+.msum div{background:var(--sky);border-radius:12px;padding:8px 4px;font-size:12px;color:var(--sub)}
+.msum b{display:block;font-size:16px;color:var(--navy)}
+.msum .neg b{color:#b42318}
+.add{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:6px;margin-top:10px}
+.add input{height:38px;border:1.5px solid var(--line);border-radius:8px;padding:0 9px;font:inherit;font-size:14px;background:var(--bg);color:var(--ink);min-width:0}
 </style></head><body>
 <header><div class="wrap"><span class="tag">교육부 주최 · 인천 개최</span>
-<h1>제19회 전국학교스포츠클럽 축전<br>줄넘기대회</h1><p>2026. 11. 14.(토) - 11. 15.(일) · 인천해양과학고 체육관</p></div></header>
+<h1 id="ttl">제19회 전국학교스포츠클럽 축전<br>줄넘기대회</h1><p>2026. 11. 14.(토) - 11. 15.(일) · 인천해양과학고 체육관</p></div></header>
 <nav><div class="wrap">
-<button data-t="info" class="on">안내</button><button data-t="sched">일정</button><button data-t="rule">종목</button><button data-t="teams">참가팀</button><button data-t="pack">준비물</button>
+<button data-t="info" class="on">안내</button><button data-t="sched">일정</button><button data-t="rule">종목</button><button data-t="teams">참가팀</button><button data-t="pack">준비물</button><button data-t="money" id="mBtn" hidden>식비</button>
 </div></nav>
 <main class="wrap">
 
@@ -249,6 +268,26 @@ nav button{font-size:13px;padding:9px 0;min-width:0}nav .wrap{gap:4px}
  </div>
 </section>
 
+<section class="tab" id="money">
+ <div class="card" id="mLock"><h2>🔒 선생님 전용</h2>
+  <div class="pinbox"><input id="mpin" type="password" inputmode="numeric" placeholder="비밀번호"><button id="mpinOk">열기</button></div><div class="t" id="mpinMsg"></div>
+ </div>
+ <div id="mBody" hidden>
+ <div class="card"><h2>💰 남고부 경비 사용 체크</h2>
+  <div class="t">품의 680,000원 · 학생 20명 · 인솔 1명 · 이 폰에만 저장돼요</div>
+  <div class="msum"><div>품의<b id="mPlan">0</b></div><div>쓴 돈<b id="mUsed">0</b></div><div id="mLeftBox">남은 돈<b id="mLeft">0</b></div></div>
+  <div class="t" id="mPct" style="margin-top:8px"></div><div class="prog"><i id="mBar" style="width:0"></i></div>
+ </div>
+ <div id="mDays"></div>
+ <div class="card"><h2>➕ 항목 더하기</h2>
+  <div class="add"><input id="mNew" placeholder="예: 생수 · 간식 추가"><input id="mNewAmt" type="number" inputmode="numeric" placeholder="예정 금액"></div>
+  <button class="save" id="mAdd">11/14(토)에 더하기</button>
+  <div class="warn" style="font-size:13px">단가 기준: 간식 1인 5,000원 · 식비 1인 9,000원 · 특식 1인 20,000원 (석식 1인 29,000원 이내). 카드 영수증·참가 인원 명단을 정산 때 같이 내요.</div>
+  <button class="x" id="mReset" style="display:block;margin:12px auto 0;border:0;background:none;color:var(--sub);text-decoration:underline;font:inherit;font-size:13px;cursor:pointer">처음 상태로 되돌리기</button>
+ </div>
+ </div>
+</section>
+
 <div class="foot">제19회 전국학교스포츠클럽 축전 줄넘기대회 운영 계획(인천광역시교육청, 2026.10.)을 바탕으로 만든 안내 페이지예요.<br>바뀐 내용은 대회 본부 공지를 따라 주세요.</div>
 </main>
 <script>
@@ -353,5 +392,42 @@ function renderPack(){var tot=0,on=0;P.forEach(function(g){var h='';g[1].forEach
  document.getElementById('pct').textContent=on+' / '+tot+' 완료'+(on===tot?' 🎉 준비 끝!':'');document.getElementById('bar').style.width=(on/tot*100)+'%'}
 document.getElementById('pack').addEventListener('click',function(e){var d=e.target.closest('[data-c]');if(!d)return;C[d.dataset.c]=!C[d.dataset.c];LS.set('jrf_pack',C);renderPack()});
 renderPack();
+
+// ---- 선생님 전용: 경비 사용 체크 (제목 5번 누르거나 주소 끝 #money) ----
+var MD=[['11/14(토)',[['k1','간식','대회 중 · 1인 5,000원 × 20명',100000],['k2','석식 (급량비)','1인 9,000원 × 20명',180000],['k3','석식 (특식비)','1인 20,000원 × 20명',400000]]]];
+var MS=LS.get('jrf_money',{}),MX=LS.get('jrf_money_x',[]);
+function won(n){return (n<0?'-':'')+Math.abs(Math.round(n)).toLocaleString('ko-KR')}
+function mItems(){var d=MD.map(function(x){return [x[0],x[1].slice()]});MX.forEach(function(it){d[0][1].push(it)});return d}
+function renderMoney(){var plan=0,used=0,tot=0,done=0,h='';
+ mItems().forEach(function(day){h+='<div class="card"><h2>📅 '+day[0]+'</h2>';
+  day[1].forEach(function(it){var st=MS[it[0]]||{},a=st.a===undefined||st.a===''?null:+st.a,on=!!st.c;plan+=it[3];tot++;if(on){done++;used+=(a==null?it[3]:a)}
+   var over=a!=null&&a>it[3];
+   h+='<div class="mi'+(on?' on':'')+(over?' over':'')+'" data-k="'+it[0]+'"><div class="top" data-tg="1"><span class="bx">'+(on?'✓':'')+'</span><span style="min-width:0"><span class="nm">'+esc(it[1])+'</span><div class="t">'+esc(it[2])+'</div></span><span class="amt">'+won(it[3])+'<small>'+(a!=null?'실제 '+won(a):'예정')+'</small></span></div>';
+   h+='<div class="f"><input data-f="a" type="number" inputmode="numeric" placeholder="실제 쓴 금액" value="'+(a==null?'':a)+'"><input data-f="m" placeholder="가게 · 메모" value="'+esc(st.m||'')+'"></div>';
+   h+='<label class="rc"><input type="checkbox" data-f="r"'+(st.r?' checked':'')+'>영수증 받음'+(it[0].charAt(0)==='x'?'<button class="x" data-del="'+it[0]+'">항목 지우기</button>':'')+'</label>';
+   if(over)h+='<div class="t" style="color:#b42318;margin-top:4px">⚠️ 예정보다 '+won(a-it[3])+'원 많아요</div>';
+   h+='</div>'});h+='</div>'});
+ document.getElementById('mDays').innerHTML=h;
+ document.getElementById('mPlan').textContent=won(plan);document.getElementById('mUsed').textContent=won(used);document.getElementById('mLeft').textContent=won(plan-used);
+ document.getElementById('mLeftBox').className=plan-used<0?'neg':'';
+ document.getElementById('mPct').textContent=done+' / '+tot+' 사용 완료'+(tot&&done===tot?' · 다 썼어요':'');document.getElementById('mBar').style.width=(tot?done/tot*100:0)+'%'}
+function mSave(){LS.set('jrf_money',MS)}
+var mb=document.getElementById('mDays');
+mb.addEventListener('click',function(e){var d=e.target.closest('[data-del]');if(d){MX=MX.filter(function(x){return x[0]!==d.dataset.del});delete MS[d.dataset.del];LS.set('jrf_money_x',MX);mSave();renderMoney();return}
+ if(!e.target.closest('[data-tg]'))return;var k=e.target.closest('[data-k]').dataset.k;MS[k]=MS[k]||{};MS[k].c=!MS[k].c;if(MS[k].c)MS[k].t=Date.now();mSave();renderMoney()});
+mb.addEventListener('change',function(e){var f=e.target.dataset.f;if(!f)return;var k=e.target.closest('[data-k]').dataset.k;MS[k]=MS[k]||{};
+ if(f==='r')MS[k].r=e.target.checked;else if(f==='m')MS[k].m=e.target.value.slice(0,60);else{MS[k].a=e.target.value===''?'':Math.max(0,+e.target.value);if(MS[k].a!==''&&!MS[k].c)MS[k].c=true}
+ mSave();renderMoney()});
+document.getElementById('mAdd').onclick=function(){var n=document.getElementById('mNew').value.trim(),v=+document.getElementById('mNewAmt').value||0;if(!n)return;
+ MX.push(['x'+Date.now(),n.slice(0,30),'직접 더한 항목',v]);LS.set('jrf_money_x',MX);document.getElementById('mNew').value='';document.getElementById('mNewAmt').value='';renderMoney()};
+document.getElementById('mReset').onclick=function(){if(!confirm('체크·금액·메모를 모두 지울까요?'))return;MS={};MX=[];mSave();LS.set('jrf_money_x',MX);renderMoney()};
+function mOpen(on){document.getElementById('mLock').hidden=on;document.getElementById('mBody').hidden=!on;document.getElementById('mBtn').hidden=!on;if(on)renderMoney()}
+function mGo(){mOpen(LS.get('jrf_munlock',false));show('money');scrollTo(0,0)}
+function mTry(){sha('jrf:'+document.getElementById('mpin').value).then(function(x){if(x===PINH){document.getElementById('mpin').value='';LS.set('jrf_munlock',true);mOpen(true)}else document.getElementById('mpinMsg').textContent='비밀번호가 달라요'})}
+document.getElementById('mpinOk').onclick=mTry;
+document.getElementById('mpin').addEventListener('keydown',function(e){if(e.key==='Enter')mTry()});
+var tc=0,tt=0;document.getElementById('ttl').addEventListener('click',function(){var n=Date.now();tc=n-tt<600?tc+1:1;tt=n;if(tc>=5){tc=0;mGo()}});
+if(LS.get('jrf_munlock',false))mOpen(true);
+if(location.hash==='#money')mGo();else if(_t==='money'&&!LS.get('jrf_munlock',false))show('info');
 </script>
 </body></html>
